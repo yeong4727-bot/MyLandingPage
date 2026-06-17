@@ -695,46 +695,110 @@
       .gallery-grid {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 14px;
+        grid-auto-rows: 110px;
+        grid-auto-flow: dense;
+        gap: 16px;
       }
 
       .tile {
-        display: grid;
-        align-content: space-between;
-        min-height: 290px;
-        padding: 18px;
+        position: relative;
+        display: block;
+        min-height: auto;
+        overflow: hidden;
         border: 1px solid var(--line);
         border-radius: 6px;
         background: rgba(255, 255, 255, 0.035);
+        color: inherit;
+        cursor: pointer;
+      }
+
+      .tile::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 28%, rgba(0, 0, 0, 0.76) 100%);
+        opacity: 0.8;
+        transition: opacity 320ms ease;
       }
 
       .tile.hidden {
         display: none;
       }
 
+      .tile.wide {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+
+      .tile.tall {
+        grid-column: span 1;
+        grid-row: span 3;
+      }
+
+      .tile.square {
+        grid-column: span 1;
+        grid-row: span 2;
+      }
+
       .tile-preview {
-        min-height: 142px;
-        border-radius: 4px;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
         background:
           linear-gradient(135deg, var(--accent), transparent 56%),
           url("assets/portfolio-collage.png");
         background-size: cover;
         background-position: var(--position, center);
+        transition: transform 640ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .tile-caption {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        left: 18px;
+        z-index: 1;
+        color: var(--white);
+        transform: translateY(14px);
+        transition: transform 320ms ease;
       }
 
       .tile h3 {
-        margin-top: 20px;
-        font-size: 20px;
+        max-width: 92%;
+        font-size: clamp(20px, 2vw, 30px);
         line-height: 1.15;
         font-weight: 900;
       }
 
       .tile p {
         margin-top: 8px;
-        color: var(--muted);
+        color: rgba(255, 255, 255, 0.72);
         font-size: 14px;
         line-height: 1.52;
-        font-weight: 600;
+        font-weight: 700;
+        opacity: 0;
+        transition: opacity 320ms ease;
+      }
+
+      .tile:hover .tile-preview,
+      .tile:focus-visible .tile-preview {
+        transform: scale(1.07);
+      }
+
+      .tile:hover::after,
+      .tile:focus-visible::after {
+        opacity: 1;
+      }
+
+      .tile:hover .tile-caption,
+      .tile:focus-visible .tile-caption {
+        transform: translateY(0);
+      }
+
+      .tile:hover p,
+      .tile:focus-visible p {
+        opacity: 1;
       }
 
       .services {
@@ -1024,6 +1088,18 @@
         .featured-grid,
         .gallery-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-auto-rows: 118px;
+        }
+
+        .tile.wide {
+          grid-column: span 2;
+          grid-row: span 2;
+        }
+
+        .tile.tall,
+        .tile.square {
+          grid-column: span 1;
+          grid-row: span 2;
         }
 
         .section-head {
@@ -1083,6 +1159,18 @@
         .gallery-grid,
         .service-grid {
           grid-template-columns: 1fr;
+        }
+
+        .gallery-grid {
+          grid-auto-rows: auto;
+        }
+
+        .tile.wide,
+        .tile.tall,
+        .tile.square {
+          grid-column: span 1;
+          grid-row: auto;
+          aspect-ratio: 4 / 5;
         }
 
         section {
@@ -1282,62 +1370,62 @@
           <button class="filter" data-filter="commerce" type="button">E-commerce</button>
         </div>
         <div class="gallery-grid">
-          <article class="tile" data-category="web" style="--accent: rgba(216, 181, 109, 0.48); --position: 10% 45%">
+          <a class="tile wide" href="portfolio-detail.html?project=landing-experience" data-category="web" aria-label="Landing Experience 상세 페이지 열기" style="--accent: rgba(216, 181, 109, 0.48); --position: 10% 45%">
             <div class="tile-preview"></div>
-            <div>
+            <div class="tile-caption">
               <h3>Landing Experience</h3>
               <p>Web Design / Interaction</p>
             </div>
-          </article>
-          <article class="tile" data-category="motion" style="--accent: rgba(142, 167, 255, 0.46); --position: 40% 50%">
+          </a>
+          <a class="tile tall" href="portfolio-detail.html?project=motion-title-pack" data-category="motion" aria-label="Motion Title Pack 상세 페이지 열기" style="--accent: rgba(142, 167, 255, 0.46); --position: 40% 50%">
             <div class="tile-preview"></div>
-            <div>
+            <div class="tile-caption">
               <h3>Motion Title Pack</h3>
               <p>Motion Graphic / Typography</p>
             </div>
-          </article>
-          <article class="tile" data-category="commerce" style="--accent: rgba(36, 92, 255, 0.68); --position: 70% 52%">
+          </a>
+          <a class="tile tall" href="portfolio-detail.html?project=commerce-visual-system" data-category="commerce" aria-label="Commerce Visual System 상세 페이지 열기" style="--accent: rgba(36, 92, 255, 0.68); --position: 70% 52%">
             <div class="tile-preview"></div>
-            <div>
+            <div class="tile-caption">
               <h3>Commerce Visual System</h3>
               <p>E-commerce / Banner System</p>
             </div>
-          </article>
-          <article class="tile" data-category="brand" style="--accent: rgba(244, 240, 232, 0.28); --position: 88% 45%">
+          </a>
+          <a class="tile square" href="portfolio-detail.html?project=brand-campaign-grid" data-category="brand" aria-label="Brand Campaign Grid 상세 페이지 열기" style="--accent: rgba(244, 240, 232, 0.28); --position: 88% 45%">
             <div class="tile-preview"></div>
-            <div>
+            <div class="tile-caption">
               <h3>Brand Campaign Grid</h3>
               <p>Branding / Campaign</p>
             </div>
-          </article>
-          <article class="tile" data-category="web" style="--accent: rgba(216, 181, 109, 0.36); --position: 24% 72%">
+          </a>
+          <a class="tile wide" href="portfolio-detail.html?project=portfolio-interface" data-category="web" aria-label="Portfolio Interface 상세 페이지 열기" style="--accent: rgba(216, 181, 109, 0.36); --position: 24% 72%">
             <div class="tile-preview"></div>
-            <div>
+            <div class="tile-caption">
               <h3>Portfolio Interface</h3>
               <p>Responsive UI / Layout</p>
             </div>
-          </article>
-          <article class="tile" data-category="motion" style="--accent: rgba(142, 167, 255, 0.38); --position: 58% 74%">
+          </a>
+          <a class="tile tall" href="portfolio-detail.html?project=social-motion-cut" data-category="motion" aria-label="Social Motion Cut 상세 페이지 열기" style="--accent: rgba(142, 167, 255, 0.38); --position: 58% 74%">
             <div class="tile-preview"></div>
-            <div>
+            <div class="tile-caption">
               <h3>Social Motion Cut</h3>
               <p>Short-form / Edit Rhythm</p>
             </div>
-          </article>
-          <article class="tile" data-category="commerce" style="--accent: rgba(36, 92, 255, 0.56); --position: 78% 78%">
+          </a>
+          <a class="tile square" href="portfolio-detail.html?project=promotion-layout" data-category="commerce" aria-label="Promotion Layout 상세 페이지 열기" style="--accent: rgba(36, 92, 255, 0.56); --position: 78% 78%">
             <div class="tile-preview"></div>
-            <div>
+            <div class="tile-caption">
               <h3>Promotion Layout</h3>
               <p>Commerce / Conversion Flow</p>
             </div>
-          </article>
-          <article class="tile" data-category="brand" style="--accent: rgba(216, 181, 109, 0.34); --position: 92% 70%">
+          </a>
+          <a class="tile square" href="portfolio-detail.html?project=campaign-thumbnail" data-category="brand" aria-label="Campaign Thumbnail 상세 페이지 열기" style="--accent: rgba(216, 181, 109, 0.34); --position: 92% 70%">
             <div class="tile-preview"></div>
-            <div>
+            <div class="tile-caption">
               <h3>Campaign Thumbnail</h3>
               <p>Visual Direction / System</p>
             </div>
-          </article>
+          </a>
         </div>
       </section>
 

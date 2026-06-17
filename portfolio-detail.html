@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Detail | NY Studio</title>
+    <style>
+      :root {
+        --ink: #f4f0e8;
+        --muted: #aaa49a;
+        --line: rgba(244, 240, 232, 0.14);
+        --paper: #0b0b0c;
+        --white: #ffffff;
+        --coral: #d8b56d;
+        --blue: #8ea7ff;
+        --lime: #d9ff75;
+        --panel: #111113;
+        --panel-soft: #171719;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--paper);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .nav {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 18px clamp(18px, 4vw, 56px);
+        background: rgba(11, 11, 12, 0.78);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        font-size: 15px;
+        font-weight: 800;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .nav-links a:hover {
+        color: var(--white);
+      }
+
+      main {
+        padding-top: 78px;
+      }
+
+      .project-hero {
+        min-height: 82vh;
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+        gap: clamp(28px, 6vw, 80px);
+        align-items: end;
+        padding: clamp(42px, 7vw, 90px) clamp(18px, 5vw, 72px);
+        background:
+          linear-gradient(135deg, var(--accent, rgba(216, 181, 109, 0.48)), transparent 58%),
+          #121212;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 34px;
+        height: 3px;
+        background: var(--coral);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 820px;
+        font-size: clamp(48px, 8vw, 112px);
+        line-height: 0.92;
+        font-weight: 900;
+      }
+
+      .summary {
+        margin-top: 24px;
+        max-width: 620px;
+        color: rgba(244, 240, 232, 0.78);
+        font-size: clamp(17px, 2vw, 22px);
+        line-height: 1.65;
+        font-weight: 650;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 18px;
+        border: 1px solid rgba(244, 240, 232, 0.24);
+        border-radius: 999px;
+        background: var(--ink);
+        color: #0b0b0c;
+        font-size: 14px;
+        font-weight: 800;
+        transition: transform 180ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .button.secondary {
+        background: transparent;
+        color: var(--ink);
+      }
+
+      .project-visual {
+        min-height: min(620px, 62vh);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background:
+          linear-gradient(135deg, var(--accent, rgba(216, 181, 109, 0.48)), transparent 56%),
+          url("assets/portfolio-collage.png");
+        background-size: cover;
+        background-position: var(--position, center);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+      }
+
+      .detail-section {
+        padding: clamp(52px, 7vw, 96px) clamp(18px, 5vw, 72px);
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.6fr) minmax(0, 1.4fr);
+        gap: clamp(28px, 6vw, 80px);
+        border-top: 1px solid var(--line);
+        padding-top: clamp(30px, 5vw, 54px);
+      }
+
+      .meta {
+        display: grid;
+        gap: 18px;
+      }
+
+      .meta-item {
+        display: grid;
+        gap: 6px;
+      }
+
+      .meta-item b {
+        color: var(--muted);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .meta-item span {
+        font-size: 17px;
+        font-weight: 800;
+      }
+
+      .story {
+        display: grid;
+        gap: 28px;
+      }
+
+      .story h2 {
+        font-size: clamp(32px, 4vw, 58px);
+        line-height: 1;
+        font-weight: 900;
+      }
+
+      .story p {
+        max-width: 760px;
+        color: rgba(244, 240, 232, 0.72);
+        font-size: 17px;
+        line-height: 1.8;
+        font-weight: 600;
+      }
+
+      .process-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        background: rgba(244, 240, 232, 0.18);
+        border: 1px solid rgba(244, 240, 232, 0.18);
+      }
+
+      .process-card {
+        min-height: 190px;
+        padding: 24px;
+        background: var(--panel);
+      }
+
+      .process-card b {
+        color: var(--coral);
+        font-size: 13px;
+      }
+
+      .process-card h3 {
+        margin-top: 14px;
+        font-size: 23px;
+        line-height: 1.12;
+      }
+
+      .process-card p {
+        margin-top: 14px;
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 26px clamp(18px, 5vw, 72px);
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      @media (max-width: 900px) {
+        .project-hero,
+        .detail-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .project-visual {
+          min-height: 420px;
+        }
+
+        .process-list {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .nav-links {
+          width: 100%;
+          justify-content: space-between;
+          gap: 10px;
+          font-size: 12px;
+        }
+
+        main {
+          padding-top: 112px;
+        }
+
+        .project-visual {
+          min-height: 300px;
+        }
+
+        footer {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav" aria-label="Main navigation">
+      <a class="brand" href="index.html">NY Studio</a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="index.html#works">Works</a>
+        <a href="index.html#portfolio">Portfolio</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="project-hero" id="projectHero">
+        <div>
+          <span class="eyebrow" id="projectCategory">Portfolio</span>
+          <h1 id="projectTitle">Project Detail</h1>
+          <p class="summary" id="projectSummary"></p>
+          <div class="hero-actions">
+            <a class="button" href="index.html#portfolio">Back to Gallery</a>
+            <a class="button secondary" href="index.html#contact">Contact</a>
+          </div>
+        </div>
+        <div class="project-visual" id="projectVisual" aria-label="Project preview image"></div>
+      </section>
+
+      <section class="detail-section">
+        <div class="detail-grid">
+          <aside class="meta" aria-label="Project information">
+            <div class="meta-item">
+              <b>Year</b>
+              <span id="projectYear">2026</span>
+            </div>
+            <div class="meta-item">
+              <b>Scope</b>
+              <span id="projectScope">Design Direction</span>
+            </div>
+            <div class="meta-item">
+              <b>Tools</b>
+              <span id="projectTools">Photoshop, Illustrator</span>
+            </div>
+          </aside>
+
+          <div class="story">
+            <h2>Project Overview</h2>
+            <p id="projectDescription"></p>
+            <div class="process-list" id="projectProcess"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© 2026 NY Studio</span>
+      <span>Web Design · Motion Graphics · Portfolio</span>
+    </footer>
+
+    <script>
+      const projects = {
+        "landing-experience": {
+          category: "Web Design / Interaction",
+          title: "Landing Experience",
+          summary: "A focused landing page concept with strong hierarchy, smooth interaction, and a visual-first portfolio flow.",
+          description: "This project organizes brand messaging, service positioning, and selected visuals into a clear scrolling experience. The goal is to help visitors understand the offer quickly while keeping the page polished enough for portfolio presentation.",
+          scope: "Landing Page, Interaction",
+          tools: "Photoshop, Illustrator",
+          accent: "rgba(216, 181, 109, 0.48)",
+          position: "10% 45%",
+          process: [
+            ["01", "Structure", "Defined the content order and the main conversion path."],
+            ["02", "Visual", "Built a strong image-led direction with restrained type and contrast."],
+            ["03", "Responsive", "Adjusted spacing and layout for mobile and desktop viewing."]
+          ]
+        },
+        "motion-title-pack": {
+          category: "Motion Graphic / Typography",
+          title: "Motion Title Pack",
+          summary: "A motion title direction built around clean typography, pacing, and reusable transition rules.",
+          description: "The title pack focuses on short-form rhythm and presentation clarity. It is designed for reels, campaign teasers, and visual edits that need impact without heavy decorative effects.",
+          scope: "Motion Title, Transition",
+          tools: "After Effects, Premiere Pro",
+          accent: "rgba(142, 167, 255, 0.46)",
+          position: "40% 50%",
+          process: [
+            ["01", "Timing", "Mapped the rhythm for cuts, title reveals, and pauses."],
+            ["02", "Type", "Set title scale and contrast for quick readability."],
+            ["03", "Export", "Prepared a reusable direction for social and campaign formats."]
+          ]
+        },
+        "commerce-visual-system": {
+          category: "E-commerce / Banner System",
+          title: "Commerce Visual System",
+          summary: "A scalable commerce visual system for banners, product highlights, and promotional layouts.",
+          description: "This project creates repeatable rules for commerce visuals so product information, campaign offers, and brand mood can stay consistent across multiple touchpoints.",
+          scope: "Banner, Detail Page",
+          tools: "Photoshop, Illustrator",
+          accent: "rgba(36, 92, 255, 0.68)",
+          position: "70% 52%",
+          process: [
+            ["01", "System", "Separated banner types by role and content priority."],
+            ["02", "Layout", "Designed repeatable grids for image, copy, and call-to-action."],
+            ["03", "Scale", "Adapted the visual rules for different campaign sizes."]
+          ]
+        },
+        "brand-campaign-grid": {
+          category: "Branding / Campaign",
+          title: "Brand Campaign Grid",
+          summary: "A campaign grid system that keeps brand visuals consistent across web and social placements.",
+          description: "The campaign grid uses controlled cropping, consistent type placement, and modular spacing to make a visual campaign easier to expand across channels.",
+          scope: "Campaign System",
+          tools: "Photoshop, Illustrator",
+          accent: "rgba(244, 240, 232, 0.28)",
+          position: "88% 45%",
+          process: [
+            ["01", "Mood", "Set the core visual tone and image direction."],
+            ["02", "Grid", "Created modular rules for layouts and thumbnails."],
+            ["03", "Apply", "Extended the system across campaign assets."]
+          ]
+        },
+        "portfolio-interface": {
+          category: "Responsive UI / Layout",
+          title: "Portfolio Interface",
+          summary: "A responsive portfolio interface for presenting selected work with clarity and visual confidence.",
+          description: "This interface is designed for fast scanning, strong project previews, and a clean path from overview to detail. The layout balances editorial scale with practical navigation.",
+          scope: "Portfolio UI, Responsive",
+          tools: "Photoshop, Illustrator, HTML/CSS",
+          accent: "rgba(216, 181, 109, 0.36)",
+          position: "24% 72%",
+          process: [
+            ["01", "Content", "Grouped projects by category and user intent."],
+            ["02", "Interface", "Designed a gallery system with strong previews."],
+            ["03", "Detail", "Connected each gallery image to a dedicated project page."]
+          ]
+        },
+        "social-motion-cut": {
+          category: "Short-form / Edit Rhythm",
+          title: "Social Motion Cut",
+          summary: "A short-form motion edit direction focused on clean transitions, pace, and visual rhythm.",
+          description: "This project explores how campaign visuals can move across short-form content. The emphasis is on timing, title clarity, and a concise visual sequence.",
+          scope: "Short-form Edit",
+          tools: "Premiere Pro, After Effects",
+          accent: "rgba(142, 167, 255, 0.38)",
+          position: "58% 74%",
+          process: [
+            ["01", "Select", "Chose key visuals and title moments for the edit."],
+            ["02", "Cut", "Built a concise rhythm with readable transitions."],
+            ["03", "Finish", "Balanced color, contrast, and final export settings."]
+          ]
+        },
+        "promotion-layout": {
+          category: "Commerce / Conversion Flow",
+          title: "Promotion Layout",
+          summary: "A commerce promotion layout designed to support product focus and conversion flow.",
+          description: "The layout gives offer information, product visuals, and action points a clear order. It can be adapted for seasonal promotions, launch campaigns, and sales banners.",
+          scope: "Promotion, Commerce UI",
+          tools: "Photoshop, Illustrator",
+          accent: "rgba(36, 92, 255, 0.56)",
+          position: "78% 78%",
+          process: [
+            ["01", "Priority", "Defined the order of offer, product, and action."],
+            ["02", "Visual", "Balanced product images with campaign copy."],
+            ["03", "Adapt", "Prepared flexible variants for different placements."]
+          ]
+        },
+        "campaign-thumbnail": {
+          category: "Visual Direction / System",
+          title: "Campaign Thumbnail",
+          summary: "A thumbnail system for campaign visuals, social previews, and portfolio presentation.",
+          description: "This project focuses on small-format impact. The system keeps titles readable, crops intentional, and visual direction consistent across campaign thumbnails.",
+          scope: "Thumbnail, Visual Direction",
+          tools: "Photoshop, Illustrator",
+          accent: "rgba(216, 181, 109, 0.34)",
+          position: "92% 70%",
+          process: [
+            ["01", "Crop", "Selected image crops that stay clear at small sizes."],
+            ["02", "Title", "Set readable type scale and placement rules."],
+            ["03", "System", "Created repeatable thumbnail variants."]
+          ]
+        }
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      const projectKey = params.get("project") || "landing-experience";
+      const project = projects[projectKey] || projects["landing-experience"];
+
+      document.title = `${project.title} | NY Studio`;
+      document.querySelector("#projectHero").style.setProperty("--accent", project.accent);
+      document.querySelector("#projectVisual").style.setProperty("--accent", project.accent);
+      document.querySelector("#projectVisual").style.setProperty("--position", project.position);
+      document.querySelector("#projectCategory").textContent = project.category;
+      document.querySelector("#projectTitle").textContent = project.title;
+      document.querySelector("#projectSummary").textContent = project.summary;
+      document.querySelector("#projectDescription").textContent = project.description;
+      document.querySelector("#projectScope").textContent = project.scope;
+      document.querySelector("#projectTools").textContent = project.tools;
+      document.querySelector("#projectProcess").innerHTML = project.process
+        .map(([number, title, text]) => `
+          <article class="process-card">
+            <b>${number}</b>
+            <h3>${title}</h3>
+            <p>${text}</p>
+          </article>
+        `)
+        .join("");
+    </script>
+  </body>
+</html>
