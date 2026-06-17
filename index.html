@@ -1,0 +1,1730 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NY Studio | Web Design & Motion Graphics</title>
+    <style>
+      :root {
+        --ink: #f4f0e8;
+        --muted: #aaa49a;
+        --line: rgba(244, 240, 232, 0.14);
+        --paper: #0b0b0c;
+        --white: #ffffff;
+        --coral: #d8b56d;
+        --blue: #8ea7ff;
+        --lime: #d9ff75;
+        --panel: #111113;
+        --panel-soft: #171719;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--paper);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .nav {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 18px clamp(18px, 4vw, 56px);
+        background: rgba(11, 11, 12, 0.78);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .nav-links a:hover {
+        color: var(--white);
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 18px;
+        border: 1px solid rgba(244, 240, 232, 0.24);
+        border-radius: 999px;
+        background: var(--ink);
+        color: #0b0b0c;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .button.secondary {
+        background: transparent;
+        color: var(--ink);
+      }
+
+      .hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-end;
+        padding: 118px clamp(18px, 5vw, 72px) 56px;
+        overflow: hidden;
+        color: var(--white);
+        background: #121212;
+        isolation: isolate;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(180deg, transparent 0%, transparent 52%, rgba(0, 0, 0, 0.18) 100%);
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 34px;
+        height: 3px;
+        background: var(--coral);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 820px;
+        font-size: clamp(54px, 9vw, 124px);
+        line-height: 0.9;
+        font-weight: 900;
+        letter-spacing: 0;
+      }
+
+      .hero-copy p {
+        max-width: 560px;
+        margin-top: 24px;
+        color: rgba(255, 255, 255, 0.88);
+        font-size: clamp(17px, 2vw, 22px);
+        line-height: 1.58;
+        font-weight: 600;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.46);
+      }
+
+      .hero-copy {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin-bottom: clamp(34px, 9vh, 108px);
+        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.52);
+      }
+
+      .hero .eyebrow {
+        color: rgba(255, 255, 255, 0.82);
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.46);
+      }
+
+      .hero h1 {
+        text-shadow: 0 3px 16px rgba(0, 0, 0, 0.54);
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 32px;
+      }
+
+      .hero .button {
+        border-color: var(--white);
+        background: var(--white);
+        color: var(--paper);
+      }
+
+      .hero .button.secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+        backdrop-filter: blur(12px);
+      }
+
+      .hero-visual {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        min-height: 0;
+      }
+
+      .hero-visual img {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        object-fit: cover;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .hero-slider {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        cursor: grab;
+        touch-action: pan-y;
+        transform: translateX(0);
+        transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+        user-select: none;
+      }
+
+      .hero-slider.is-dragging {
+        cursor: grabbing;
+        transition: none;
+      }
+
+      .hero-slide {
+        flex: 0 0 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+      }
+
+      .hero-slide:nth-child(2) {
+        object-position: 42% center;
+      }
+
+      .hero-slide:nth-child(3) {
+        object-position: 76% center;
+      }
+
+      .hero-dots {
+        position: absolute;
+        left: 50%;
+        bottom: 22px;
+        z-index: 3;
+        display: flex;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16);
+        transform: translateX(-50%);
+      }
+
+      .hero-dot {
+        width: 8px;
+        height: 8px;
+        padding: 0;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(22, 22, 22, 0.28);
+        cursor: pointer;
+        transition: width 220ms ease, background 220ms ease;
+      }
+
+      .hero-dot.active {
+        width: 24px;
+        background: var(--paper);
+      }
+
+      .tool-badges {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(4, 60px);
+        gap: 10px;
+        margin-bottom: 18px;
+        width: auto;
+      }
+
+      .tool-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        width: 60px;
+        min-height: 60px;
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        background: #ffffff;
+        color: var(--white);
+        box-shadow: 0 14px 34px rgba(255, 255, 255, 0.18), 0 10px 26px rgba(0, 0, 0, 0.18);
+      }
+
+      .tool-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 7px;
+        font-size: 19px;
+        font-weight: 900;
+      }
+
+      .tool-badge strong {
+        display: block;
+        font-size: 13px;
+        line-height: 1.2;
+      }
+
+      .tool-badge span:last-child {
+        display: none;
+        margin-top: 4px;
+        color: rgba(255, 255, 255, 0.68);
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .tool-ps .tool-icon {
+        background: #dff2ff;
+        color: #0057a8;
+      }
+
+      .tool-ai .tool-icon {
+        background: #fff0d4;
+        color: #b65b00;
+      }
+
+      .tool-pr .tool-icon {
+        background: #ece8ff;
+        color: #4f35d2;
+      }
+
+      .tool-ae .tool-icon {
+        background: #f2e5ff;
+        color: #6d25b8;
+      }
+
+      section {
+        margin-right: clamp(28px, 7vw, 120px);
+        margin-left: clamp(28px, 7vw, 120px);
+        padding: 110px clamp(24px, 6vw, 96px);
+      }
+
+      .hero {
+        margin-right: 0;
+        margin-left: 0;
+      }
+
+      .hero + section {
+        margin-top: clamp(28px, 5vw, 72px);
+      }
+
+      .section-head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        margin-bottom: 34px;
+        text-align: center;
+      }
+
+      h2 {
+        max-width: 760px;
+        margin-right: auto;
+        margin-left: auto;
+        font-size: clamp(34px, 5vw, 72px);
+        line-height: 0.96;
+        font-weight: 900;
+        letter-spacing: 0;
+      }
+
+      .section-head p {
+        max-width: 420px;
+        margin-right: auto;
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.7;
+        font-weight: 600;
+      }
+
+      .featured {
+        background: var(--panel);
+      }
+
+      .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .work-card {
+        position: relative;
+        min-height: 520px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel-soft);
+        isolation: isolate;
+        cursor: pointer;
+      }
+
+      .work-card::before {
+        content: none;
+      }
+
+      .work-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.72));
+        opacity: 0.72;
+        transition: opacity 300ms ease;
+      }
+
+      .work-card:hover .work-video,
+      .work-card:focus-visible .work-video {
+        transform: scale(1.08);
+      }
+
+      .work-card:hover::after,
+      .work-card:focus-visible::after {
+        opacity: 1;
+      }
+
+      .work-card.active {
+        outline: 1px solid rgba(216, 181, 109, 0.82);
+        outline-offset: 4px;
+      }
+
+      .work-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.01);
+        transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+        pointer-events: none;
+      }
+
+      .work-content {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 24px;
+        color: var(--white);
+        opacity: 0.86;
+        transform: translateY(18px);
+        transition: opacity 320ms ease, transform 320ms ease;
+      }
+
+      .work-card:hover .work-content,
+      .work-card:focus-visible .work-content {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .work-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        color: rgba(255, 255, 255, 0.74);
+        font-size: 12px;
+        font-weight: 850;
+        text-transform: uppercase;
+      }
+
+      .work-content h3 {
+        max-width: 92%;
+        font-size: clamp(28px, 3vw, 42px);
+        line-height: 0.98;
+        font-weight: 900;
+      }
+
+      .work-content p {
+        margin-top: 10px;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 14px;
+        line-height: 1.55;
+        font-weight: 650;
+      }
+
+      .work-info {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 320ms ease, transform 320ms ease;
+      }
+
+      .work-card:hover .work-info,
+      .work-card:focus-visible .work-info {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .process-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        margin-top: 20px;
+        padding: 0 16px;
+        border: 1px solid rgba(255, 255, 255, 0.34);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--white);
+        font-size: 13px;
+        font-weight: 900;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 260ms ease, transform 260ms ease, background 260ms ease;
+        backdrop-filter: blur(12px);
+      }
+
+      .work-card:hover .process-button,
+      .work-card:focus-visible .process-button {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .process-button:hover {
+        background: rgba(255, 255, 255, 0.16);
+      }
+
+      .process-button::after {
+        content: "↗";
+        margin-left: 8px;
+        font-size: 15px;
+        line-height: 1;
+      }
+
+      .process-panel {
+        position: relative;
+        display: none;
+        margin-top: 34px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .process-panel.open {
+        display: grid;
+        grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+        animation: processIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      .process-visual {
+        min-height: 420px;
+        background:
+          linear-gradient(135deg, var(--process-accent, rgba(255, 91, 79, 0.68)), transparent 62%),
+          url("assets/portfolio-collage.png");
+        background-size: cover;
+        background-position: var(--process-position, center);
+      }
+
+      .process-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        z-index: 3;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border: 1px solid rgba(22, 22, 22, 0.12);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--paper);
+        font-size: 24px;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 8px 24px rgba(12, 12, 16, 0.12);
+        transition: transform 180ms ease, background 180ms ease;
+      }
+
+      .process-close:hover {
+        transform: translateY(-1px);
+        background: var(--white);
+      }
+
+      .process-content {
+        padding: clamp(24px, 4vw, 48px);
+      }
+
+      .process-content small {
+        color: var(--coral);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .process-content h3 {
+        margin-top: 12px;
+        font-size: clamp(28px, 4vw, 48px);
+        line-height: 1;
+        font-weight: 900;
+      }
+
+      .process-content p {
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.7;
+        font-weight: 650;
+      }
+
+      .process-steps {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 26px;
+      }
+
+      .process-step {
+        min-height: 128px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.035);
+      }
+
+      .process-step b {
+        display: block;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .process-step span {
+        display: block;
+        margin-top: 9px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+        font-weight: 650;
+      }
+
+      @keyframes processIn {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+
+      .filter {
+        min-height: 40px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.035);
+        color: var(--muted);
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .filter.active {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: var(--paper);
+      }
+
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .tile {
+        display: grid;
+        align-content: space-between;
+        min-height: 290px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.035);
+      }
+
+      .tile.hidden {
+        display: none;
+      }
+
+      .tile-preview {
+        min-height: 142px;
+        border-radius: 4px;
+        background:
+          linear-gradient(135deg, var(--accent), transparent 56%),
+          url("assets/portfolio-collage.png");
+        background-size: cover;
+        background-position: var(--position, center);
+      }
+
+      .tile h3 {
+        margin-top: 20px;
+        font-size: 20px;
+        line-height: 1.15;
+        font-weight: 900;
+      }
+
+      .tile p {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.52;
+        font-weight: 600;
+      }
+
+      .services {
+        background: var(--panel);
+        color: var(--white);
+      }
+
+      .services .section-head p {
+        color: rgba(255, 255, 255, 0.68);
+      }
+
+      .service-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .service {
+        min-height: 280px;
+        padding: clamp(24px, 4vw, 42px);
+        background: var(--panel);
+      }
+
+      .service b {
+        color: var(--coral);
+        font-size: 13px;
+      }
+
+      .service h3 {
+        margin-top: 18px;
+        font-size: clamp(28px, 4vw, 50px);
+        line-height: 1;
+        font-weight: 900;
+      }
+
+      .service p {
+        margin-top: 18px;
+        max-width: 520px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 16px;
+        line-height: 1.7;
+        font-weight: 600;
+      }
+
+      .about-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+        gap: clamp(28px, 6vw, 90px);
+        align-items: start;
+      }
+
+      .about-layout > div:first-child {
+        text-align: center;
+      }
+
+      .about-copy p {
+        color: #34343a;
+        font-size: clamp(18px, 2vw, 24px);
+        line-height: 1.7;
+        font-weight: 650;
+      }
+
+      .career-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 28px;
+      }
+
+      .pill {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--line);
+        color: var(--muted);
+        font-weight: 750;
+      }
+
+      .pill span:first-child {
+        color: var(--ink);
+      }
+
+      .motion-reel {
+        background: #111111;
+        color: var(--white);
+      }
+
+      .motion-reel .section-head p {
+        color: rgba(255, 255, 255, 0.68);
+      }
+
+      .reel-frame {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 8px;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0)),
+          #181818;
+        aspect-ratio: 16 / 9;
+        box-shadow: 0 26px 70px rgba(0, 0, 0, 0.28);
+      }
+
+      .reel-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.86;
+        transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1), opacity 320ms ease;
+      }
+
+      .reel-frame:hover .reel-video {
+        opacity: 1;
+        transform: scale(1.025);
+      }
+
+      .reel-frame::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 45%, rgba(0, 0, 0, 0.38));
+        pointer-events: none;
+      }
+
+      .reel-play {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 86px;
+        height: 86px;
+        border: 1px solid rgba(255, 255, 255, 0.46);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--ink);
+        font-size: 30px;
+        cursor: pointer;
+        transform: translate(-50%, -50%);
+        transition: transform 220ms ease, background 220ms ease, opacity 220ms ease;
+      }
+
+      .reel-play:hover {
+        background: var(--white);
+        transform: translate(-50%, -50%) scale(1.06);
+      }
+
+      .reel-frame.is-playing .reel-play {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .contact {
+        min-height: 64vh;
+        display: grid;
+        align-items: center;
+        background:
+          linear-gradient(90deg, rgba(0, 0, 0, 0.84), rgba(25, 22, 18, 0.7)),
+          url("assets/portfolio-collage.png");
+        background-size: cover;
+        background-position: center;
+        color: var(--white);
+        text-align: center;
+      }
+
+      .contact h2 {
+        max-width: 980px;
+      }
+
+      .contact p {
+        max-width: 640px;
+        margin: 22px auto 0;
+        color: rgba(255, 255, 255, 0.84);
+        font-size: 19px;
+        line-height: 1.65;
+        font-weight: 700;
+      }
+
+      .contact-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .contact .button {
+        border-color: var(--white);
+      }
+
+      .contact .button.secondary {
+        color: var(--white);
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(34px);
+        transition:
+          opacity 720ms ease,
+          transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition-delay: var(--reveal-delay, 0ms);
+        will-change: opacity, transform;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .reveal-image {
+        opacity: 0;
+        transform: translateY(38px) scale(0.97);
+        transition:
+          opacity 820ms ease,
+          transform 820ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition-delay: var(--reveal-delay, 0ms);
+        will-change: opacity, transform;
+      }
+
+      .reveal-image.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .section-reveal {
+        opacity: 0;
+        transform: translateY(46px);
+        transition:
+          opacity 860ms ease,
+          transform 860ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition-delay: var(--section-delay, 0ms);
+        will-change: opacity, transform;
+      }
+
+      .section-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .reveal,
+        .reveal-image,
+        .section-reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
+
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 24px clamp(18px, 5vw, 72px);
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      @media (max-width: 980px) {
+        .nav-links {
+          display: none;
+        }
+
+        .about-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          padding-top: 104px;
+        }
+
+        .hero-visual {
+          min-height: 0;
+        }
+
+        .hero-visual img {
+          height: 100%;
+          min-height: 0;
+        }
+
+        .featured-grid,
+        .gallery-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .section-head {
+          display: block;
+        }
+
+        .section-head p {
+          margin: 18px auto 0;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .hero {
+          min-height: 100vh;
+          align-items: end;
+          padding-bottom: 34px;
+        }
+
+        .hero::after {
+          background: linear-gradient(180deg, transparent 0%, transparent 58%, rgba(0, 0, 0, 0.12) 100%);
+        }
+
+        .tool-badges {
+          grid-template-columns: repeat(4, 46px);
+          gap: 8px;
+          margin-bottom: 16px;
+          width: auto;
+        }
+
+        .tool-badge {
+          display: flex;
+          width: 46px;
+          min-height: 46px;
+          padding: 0;
+        }
+
+        .tool-icon {
+          width: 38px;
+          height: 38px;
+          font-size: 16px;
+        }
+
+        .tool-badge > span:last-child {
+          display: none;
+        }
+
+        .hero-copy {
+          margin-bottom: 0;
+        }
+
+        .hero-visual img {
+          height: 100%;
+          min-height: 0;
+        }
+
+        .featured-grid,
+        .gallery-grid,
+        .service-grid {
+          grid-template-columns: 1fr;
+        }
+
+        section {
+          margin-right: 18px;
+          margin-left: 18px;
+          padding-right: 22px;
+          padding-left: 22px;
+        }
+
+        .hero {
+          margin-right: 0;
+          margin-left: 0;
+        }
+
+        .work-card {
+          min-height: 360px;
+        }
+
+        .process-panel.open {
+          grid-template-columns: 1fr;
+        }
+
+        .process-visual {
+          min-height: 260px;
+        }
+
+        .process-steps {
+          grid-template-columns: 1fr;
+        }
+
+        .reel-frame {
+          aspect-ratio: 4 / 5;
+        }
+
+        .reel-play {
+          width: 68px;
+          height: 68px;
+          font-size: 24px;
+        }
+
+        .tile {
+          min-height: 260px;
+        }
+
+        footer {
+          display: block;
+        }
+
+        footer span:last-child {
+          display: block;
+          margin-top: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav" aria-label="Main navigation">
+      <a class="brand" href="#">NY Studio</a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="#works">Works</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="tool-badges" aria-label="사용 가능 프로그램">
+            <div class="tool-badge tool-ps">
+              <span class="tool-icon">Ps</span>
+              <span><strong>Photoshop</strong><span>Image Edit</span></span>
+            </div>
+            <div class="tool-badge tool-ai">
+              <span class="tool-icon">Ai</span>
+              <span><strong>Illustrator</strong><span>Graphic</span></span>
+            </div>
+            <div class="tool-badge tool-pr">
+              <span class="tool-icon">Pr</span>
+              <span><strong>Premiere Pro</strong><span>Video Edit</span></span>
+            </div>
+            <div class="tool-badge tool-ae">
+              <span class="tool-icon">Ae</span>
+              <span><strong>After Effects</strong><span>Motion</span></span>
+            </div>
+          </div>
+          <span class="eyebrow">Web Design / Motion Graphics</span>
+          <h1>Web Design & Motion Portfolio</h1>
+          <p>
+            NY Studio designs refined web experiences and motion-led visuals for brands,
+            campaigns, and digital products.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#works">View Projects</a>
+            <a class="button secondary" href="#contact">Contact</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Portfolio collage">
+          <div class="hero-slider" aria-hidden="true">
+            <img class="hero-slide" src="assets/hero-slide-1.png" alt="" />
+            <img class="hero-slide" src="assets/hero-slide-2.png" alt="" />
+            <img class="hero-slide" src="assets/hero-slide-3.png" alt="" />
+            <img class="hero-slide hero-slide-clone" src="assets/hero-slide-1.png" alt="" />
+          </div>
+          <div class="hero-dots" aria-label="Hero image slides">
+            <button class="hero-dot active" type="button" aria-label="첫 번째 이미지"></button>
+            <button class="hero-dot" type="button" aria-label="두 번째 이미지"></button>
+            <button class="hero-dot" type="button" aria-label="세 번째 이미지"></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="motion-reel" id="motion-reel">
+        <div class="section-head">
+          <h2>Motion Reel</h2>
+          <p>A curated placeholder for interface transitions, campaign motion, and visual rhythm.</p>
+        </div>
+        <div class="reel-frame">
+          <video class="reel-video" src="assets/videos/motion-reel.mp4" poster="assets/portfolio-collage.png" playsinline preload="metadata"></video>
+          <button class="reel-play" type="button" aria-label="Motion Reel 재생">▶</button>
+        </div>
+      </section>
+
+      <section class="featured" id="works">
+        <div class="section-head">
+          <h2>Selected Projects</h2>
+          <p>Representative work across web design, motion graphics, and campaign systems.</p>
+        </div>
+        <div class="featured-grid">
+          <article class="work-card" data-work="web" role="button" tabindex="0">
+            <video class="work-video" src="assets/videos/fashion.mp4" muted loop playsinline preload="metadata" poster="assets/portfolio-collage.png"></video>
+            <div class="work-content">
+              <div class="work-meta">
+                <span>Web Design</span>
+                <span>2026</span>
+              </div>
+              <div class="work-info">
+                <h3>Editorial Web Interface</h3>
+                <p>Premium interface concept with refined hierarchy and responsive layout.</p>
+                <span class="process-button">View Case Study</span>
+              </div>
+            </div>
+          </article>
+          <article class="work-card" data-work="motion" role="button" tabindex="0">
+            <video class="work-video" src="assets/videos/beauty.mp4" muted loop playsinline preload="metadata" poster="assets/portfolio-collage.png"></video>
+            <div class="work-content">
+              <div class="work-meta">
+                <span>Motion Graphics</span>
+                <span>2026</span>
+              </div>
+              <div class="work-info">
+                <h3>Motion Identity Reel</h3>
+                <p>Motion showcase built around typography, timing, and visual rhythm.</p>
+                <span class="process-button">View Case Study</span>
+              </div>
+            </div>
+          </article>
+          <article class="work-card" data-work="campaign" role="button" tabindex="0">
+            <video class="work-video" src="assets/videos/commerce.mp4" muted loop playsinline preload="metadata" poster="assets/portfolio-collage.png"></video>
+            <div class="work-content">
+              <div class="work-meta">
+                <span>Campaign</span>
+                <span>2026</span>
+              </div>
+              <div class="work-info">
+                <h3>Digital Campaign System</h3>
+                <p>Scalable visual system for banners, detail pages, and motion thumbnails.</p>
+                <span class="process-button">View Case Study</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="process-panel" id="workProcess" aria-live="polite">
+          <button class="process-close" id="processClose" type="button" aria-label="Case study 닫기">×</button>
+          <div class="process-visual" id="processVisual"></div>
+          <div class="process-content">
+            <small id="processCategory">Web Design</small>
+            <h3 id="processTitle">Editorial Web Interface</h3>
+            <p id="processSummary">Select a project to review the design process.</p>
+            <div class="process-steps" id="processSteps"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="portfolio">
+        <div class="section-head">
+          <h2>Portfolio Gallery</h2>
+          <p>Explore interface, motion, branding, and commerce work by category.</p>
+        </div>
+        <div class="filters" aria-label="Portfolio filters">
+          <button class="filter active" data-filter="all" type="button">All</button>
+          <button class="filter" data-filter="web" type="button">Web</button>
+          <button class="filter" data-filter="motion" type="button">Motion</button>
+          <button class="filter" data-filter="brand" type="button">Branding</button>
+          <button class="filter" data-filter="commerce" type="button">E-commerce</button>
+        </div>
+        <div class="gallery-grid">
+          <article class="tile" data-category="web" style="--accent: rgba(216, 181, 109, 0.48); --position: 10% 45%">
+            <div class="tile-preview"></div>
+            <div>
+              <h3>Landing Experience</h3>
+              <p>Web Design / Interaction</p>
+            </div>
+          </article>
+          <article class="tile" data-category="motion" style="--accent: rgba(142, 167, 255, 0.46); --position: 40% 50%">
+            <div class="tile-preview"></div>
+            <div>
+              <h3>Motion Title Pack</h3>
+              <p>Motion Graphic / Typography</p>
+            </div>
+          </article>
+          <article class="tile" data-category="commerce" style="--accent: rgba(36, 92, 255, 0.68); --position: 70% 52%">
+            <div class="tile-preview"></div>
+            <div>
+              <h3>Commerce Visual System</h3>
+              <p>E-commerce / Banner System</p>
+            </div>
+          </article>
+          <article class="tile" data-category="brand" style="--accent: rgba(244, 240, 232, 0.28); --position: 88% 45%">
+            <div class="tile-preview"></div>
+            <div>
+              <h3>Brand Campaign Grid</h3>
+              <p>Branding / Campaign</p>
+            </div>
+          </article>
+          <article class="tile" data-category="web" style="--accent: rgba(216, 181, 109, 0.36); --position: 24% 72%">
+            <div class="tile-preview"></div>
+            <div>
+              <h3>Portfolio Interface</h3>
+              <p>Responsive UI / Layout</p>
+            </div>
+          </article>
+          <article class="tile" data-category="motion" style="--accent: rgba(142, 167, 255, 0.38); --position: 58% 74%">
+            <div class="tile-preview"></div>
+            <div>
+              <h3>Social Motion Cut</h3>
+              <p>Short-form / Edit Rhythm</p>
+            </div>
+          </article>
+          <article class="tile" data-category="commerce" style="--accent: rgba(36, 92, 255, 0.56); --position: 78% 78%">
+            <div class="tile-preview"></div>
+            <div>
+              <h3>Promotion Layout</h3>
+              <p>Commerce / Conversion Flow</p>
+            </div>
+          </article>
+          <article class="tile" data-category="brand" style="--accent: rgba(216, 181, 109, 0.34); --position: 92% 70%">
+            <div class="tile-preview"></div>
+            <div>
+              <h3>Campaign Thumbnail</h3>
+              <p>Visual Direction / System</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="services" id="services">
+        <div class="section-head">
+          <h2>Design services for digital-first brands</h2>
+          <p>From interface structure to motion assets, each output is built to feel precise, usable, and campaign-ready.</p>
+        </div>
+        <div class="service-grid">
+          <article class="service">
+            <b>01 / WEB</b>
+            <h3>Web Design</h3>
+            <p>Landing pages, portfolio systems, and campaign interfaces with clear hierarchy, responsive layouts, and polished visual direction.</p>
+          </article>
+          <article class="service">
+            <b>02 / MOTION</b>
+            <h3>Motion Graphics</h3>
+            <p>Short-form edits, motion titles, visual transitions, and animated assets that make digital content feel more premium.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="about-layout">
+          <div>
+            <span class="eyebrow">About</span>
+            <h2>Career & Capability</h2>
+          </div>
+          <div class="about-copy">
+            <p>
+              웹 화면의 구조와 모션그래픽의 리듬을 함께 다루며, 브랜드가 필요한 디지털 경험을
+              명확한 정보 위계와 완성도 높은 비주얼로 설계합니다.
+            </p>
+            <div class="career-list">
+              <div class="pill"><span>Landing page and portfolio interface design</span><span>Web</span></div>
+              <div class="pill"><span>Motion title and short-form visual editing</span><span>Motion</span></div>
+              <div class="pill"><span>Commerce banner and detail-page visual systems</span><span>Commerce</span></div>
+              <div class="pill"><span>Campaign visual direction and content layout</span><span>Brand</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div>
+          <span class="eyebrow">Contact</span>
+          <h2>Let’s build a sharper digital presence.</h2>
+          <p>Available for web design, motion graphic, campaign visual, and portfolio-focused design projects.</p>
+          <div class="contact-actions">
+            <a class="button" href="mailto:hello@example.com">hello@example.com</a>
+            <a class="button secondary" href="https://instagram.com/" target="_blank" rel="noreferrer">Instagram</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© 2026 NY Studio</span>
+      <span>Web Design · Motion Graphics · Portfolio</span>
+    </footer>
+
+    <script>
+      const filters = document.querySelectorAll(".filter");
+      const tiles = document.querySelectorAll(".tile");
+      const heroSlider = document.querySelector(".hero-slider");
+      const heroSlides = document.querySelectorAll(".hero-slide");
+      const heroDots = document.querySelectorAll(".hero-dot");
+      const reelFrame = document.querySelector(".reel-frame");
+      const reelVideo = document.querySelector(".reel-video");
+      const reelPlay = document.querySelector(".reel-play");
+      const workCards = document.querySelectorAll(".work-card");
+      const processPanel = document.querySelector("#workProcess");
+      const processVisual = document.querySelector("#processVisual");
+      const processCategory = document.querySelector("#processCategory");
+      const processTitle = document.querySelector("#processTitle");
+      const processSummary = document.querySelector("#processSummary");
+      const processSteps = document.querySelector("#processSteps");
+      const processClose = document.querySelector("#processClose");
+      const sectionRevealItems = document.querySelectorAll("main > section:not(.hero)");
+      const revealItems = document.querySelectorAll(
+        ".section-head, .work-card, .tile, .service, .about-layout > div, .career-list, .contact .eyebrow, .contact h2, .contact p, .contact-actions"
+      );
+
+      const processData = {
+        web: {
+          category: "Web Design",
+          title: "Editorial Web Interface",
+          summary: "A premium web concept focused on hierarchy, visual pacing, and a clear conversion path.",
+          accent: "rgba(216, 181, 109, 0.52)",
+          position: "20% center",
+          steps: [
+            ["Overview", "Defined the page structure, brand tone, and primary user actions."],
+            ["Problem", "The content needed a clearer visual hierarchy across desktop and mobile."],
+            ["Idea", "Built a layout system with strong type, restrained color, and modular sections."],
+            ["Design", "Refined spacing, contrast, CTA placement, and responsive behavior."],
+            ["Result", "A polished interface direction suitable for portfolio or campaign landing pages."],
+            ["Tools", "Photoshop, Illustrator"]
+          ]
+        },
+        motion: {
+          category: "Motion Graphics",
+          title: "Motion Identity Reel",
+          summary: "A motion-focused system for titles, transitions, short-form edits, and campaign rhythm.",
+          accent: "rgba(142, 167, 255, 0.46)",
+          position: "55% center",
+          steps: [
+            ["Overview", "Mapped the motion tone, pacing, and visual transitions for a brand reel."],
+            ["Problem", "Static assets needed more impact without adding unnecessary effects."],
+            ["Idea", "Used typography, timing, and clean transitions as the core motion language."],
+            ["Design", "Tested title scale, cut rhythm, and visual contrast for quick comprehension."],
+            ["Result", "A concise motion direction that feels refined and presentation-ready."],
+            ["Tools", "Premiere Pro, After Effects, Photoshop"]
+          ]
+        },
+        campaign: {
+          category: "Campaign",
+          title: "Digital Campaign System",
+          summary: "A scalable visual system for campaign pages, banners, thumbnails, and motion assets.",
+          accent: "rgba(244, 240, 232, 0.32)",
+          position: "85% center",
+          steps: [
+            ["Overview", "Separated campaign assets by role: hero, detail, thumbnail, and motion cut."],
+            ["Problem", "The visual system needed consistency across multiple digital touchpoints."],
+            ["Idea", "Created repeatable rules for image crops, type scale, and content priority."],
+            ["Design", "Adjusted layouts for scanning, comparison, and mobile-first viewing."],
+            ["Result", "A flexible campaign system that can expand across web and social content."],
+            ["Tools", "Photoshop, Illustrator, Premiere Pro"]
+          ]
+        }
+      };
+
+      let currentHeroSlide = 0;
+      let heroSlideTimer = null;
+      let dragStartX = 0;
+      let dragCurrentX = 0;
+      let isHeroDragging = false;
+      const realHeroSlideCount = heroDots.length;
+
+      const setHeroTrack = (index, animate = true) => {
+        heroSlider.style.transition = animate ? "" : "none";
+        heroSlider.style.transform = `translateX(-${index * 100}%)`;
+      };
+
+      const updateHeroDots = () => {
+        const activeDot = currentHeroSlide % realHeroSlideCount;
+        heroDots.forEach((dot, dotIndex) => {
+          dot.classList.toggle("active", dotIndex === activeDot);
+        });
+      };
+
+      const showHeroSlide = (index, animate = true) => {
+        if (index < 0) {
+          currentHeroSlide = realHeroSlideCount - 1;
+        } else if (index > realHeroSlideCount) {
+          currentHeroSlide = 0;
+        } else {
+          currentHeroSlide = index;
+        }
+
+        setHeroTrack(currentHeroSlide, animate);
+        updateHeroDots();
+      };
+
+      const resetHeroLoopIfNeeded = () => {
+        if (currentHeroSlide !== realHeroSlideCount) {
+          return;
+        }
+
+        currentHeroSlide = 0;
+        setHeroTrack(currentHeroSlide, false);
+        updateHeroDots();
+
+        requestAnimationFrame(() => {
+          heroSlider.style.transition = "";
+        });
+      };
+
+      const startHeroAutoSlide = () => {
+        clearInterval(heroSlideTimer);
+        heroSlideTimer = setInterval(() => {
+          showHeroSlide(currentHeroSlide + 1);
+        }, 2000);
+      };
+
+      const moveHeroSlide = (direction) => {
+        showHeroSlide(currentHeroSlide + direction);
+        startHeroAutoSlide();
+      };
+
+      heroSlider.addEventListener("transitionend", resetHeroLoopIfNeeded);
+
+      heroDots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          showHeroSlide(index);
+          startHeroAutoSlide();
+        });
+      });
+
+      heroSlider.addEventListener("pointerdown", (event) => {
+        isHeroDragging = true;
+        dragStartX = event.clientX;
+        dragCurrentX = event.clientX;
+        clearInterval(heroSlideTimer);
+        heroSlider.classList.add("is-dragging");
+        heroSlider.setPointerCapture(event.pointerId);
+      });
+
+      heroSlider.addEventListener("pointermove", (event) => {
+        if (!isHeroDragging) {
+          return;
+        }
+
+        dragCurrentX = event.clientX;
+        const dragPercent = ((dragCurrentX - dragStartX) / heroSlider.clientWidth) * 100;
+        heroSlider.style.transform = `translateX(calc(-${currentHeroSlide * 100}% + ${dragPercent}%))`;
+      });
+
+      heroSlider.addEventListener("pointerup", (event) => {
+        if (!isHeroDragging) {
+          return;
+        }
+
+        const dragDistance = event.clientX - dragStartX;
+        isHeroDragging = false;
+        heroSlider.classList.remove("is-dragging");
+        heroSlider.releasePointerCapture(event.pointerId);
+
+        if (Math.abs(dragDistance) < 42) {
+          showHeroSlide(currentHeroSlide);
+          startHeroAutoSlide();
+          return;
+        }
+
+        moveHeroSlide(dragDistance < 0 ? 1 : -1);
+      });
+
+      heroSlider.addEventListener("pointercancel", () => {
+        isHeroDragging = false;
+        heroSlider.classList.remove("is-dragging");
+        showHeroSlide(currentHeroSlide);
+        startHeroAutoSlide();
+      });
+
+      showHeroSlide(0);
+      startHeroAutoSlide();
+
+      reelPlay.addEventListener("click", () => {
+        reelVideo.play().then(() => {
+          reelFrame.classList.add("is-playing");
+        }).catch(() => {});
+      });
+
+      reelVideo.addEventListener("click", () => {
+        if (reelVideo.paused) {
+          reelVideo.play().then(() => {
+            reelFrame.classList.add("is-playing");
+          }).catch(() => {});
+          return;
+        }
+
+        reelVideo.pause();
+      });
+
+      reelVideo.addEventListener("pause", () => {
+        reelFrame.classList.remove("is-playing");
+      });
+
+      reelVideo.addEventListener("ended", () => {
+        reelFrame.classList.remove("is-playing");
+      });
+
+      const renderProcess = (workKey) => {
+        const work = processData[workKey];
+
+        if (!work) {
+          return;
+        }
+
+        workCards.forEach((card) => {
+          card.classList.toggle("active", card.dataset.work === workKey);
+        });
+
+        processPanel.classList.add("open");
+        processPanel.style.setProperty("--process-accent", work.accent);
+        processPanel.style.setProperty("--process-position", work.position);
+        processVisual.style.setProperty("--process-accent", work.accent);
+        processVisual.style.setProperty("--process-position", work.position);
+        processCategory.textContent = work.category;
+        processTitle.textContent = work.title;
+        processSummary.textContent = work.summary;
+        processSteps.innerHTML = work.steps
+          .map(([label, text]) => `<div class="process-step"><b>${label}</b><span>${text}</span></div>`)
+          .join("");
+
+        processPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      };
+
+      workCards.forEach((card) => {
+        const video = card.querySelector(".work-video");
+
+        const playVideo = () => {
+          if (!video) {
+            return;
+          }
+
+          video.muted = true;
+          video.play().catch(() => {});
+        };
+
+        const pauseVideo = () => {
+          if (!video) {
+            return;
+          }
+
+          video.pause();
+          video.currentTime = 0;
+        };
+
+        card.addEventListener("mouseenter", playVideo);
+        card.addEventListener("mouseleave", pauseVideo);
+        card.addEventListener("focusin", playVideo);
+        card.addEventListener("focusout", pauseVideo);
+        card.addEventListener("click", () => renderProcess(card.dataset.work));
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            renderProcess(card.dataset.work);
+          }
+        });
+      });
+
+      processClose.addEventListener("click", () => {
+        processPanel.classList.remove("open");
+        workCards.forEach((card) => card.classList.remove("active"));
+        document.querySelector("#works .featured-grid").scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      });
+
+      sectionRevealItems.forEach((section, index) => {
+        section.classList.add("section-reveal");
+        section.style.setProperty("--section-delay", `${Math.min(index, 3) * 70}ms`);
+      });
+
+      revealItems.forEach((item, index) => {
+        const isImageBlock = item.classList.contains("work-card") || item.classList.contains("tile");
+        item.classList.add(isImageBlock ? "reveal-image" : "reveal");
+        item.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 90}ms`);
+      });
+
+      const animatedItems = [...sectionRevealItems, ...revealItems];
+
+      if ("IntersectionObserver" in window) {
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) {
+                return;
+              }
+
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            });
+          },
+          {
+            threshold: 0.16,
+            rootMargin: "0px 0px -8% 0px",
+          }
+        );
+
+        animatedItems.forEach((item) => revealObserver.observe(item));
+      } else {
+        animatedItems.forEach((item) => item.classList.add("is-visible"));
+      }
+
+      filters.forEach((filter) => {
+        filter.addEventListener("click", () => {
+          const category = filter.dataset.filter;
+
+          filters.forEach((item) => item.classList.toggle("active", item === filter));
+          tiles.forEach((tile) => {
+            const shouldShow = category === "all" || tile.dataset.category === category;
+            tile.classList.toggle("hidden", !shouldShow);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
