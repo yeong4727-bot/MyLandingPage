@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>작업 문의 | NY Studio</title>
+    <link rel="stylesheet" href="contact.css" />
+    <script src="contact.js" defer></script>
+  </head>
+  <body>
+    <header class="nav" aria-label="Main navigation">
+      <a class="brand" href="index.html">NY Studio</a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="index.html#works">Works</a>
+        <a href="index.html#portfolio">Portfolio</a>
+        <a href="index.html#services">Services</a>
+        <a href="guestbook.html">Guestbook</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section class="intro" aria-labelledby="contactTitle">
+        <span class="eyebrow">Project Inquiry</span>
+        <h1 id="contactTitle">작업 문의</h1>
+        <p>
+          필요한 범위와 일정을 남겨주시면 프로젝트에 맞는 방향과 진행 방식을 정리해 연락드리겠습니다.
+        </p>
+      </section>
+
+      <section class="form-shell" aria-label="작업 문의 양식">
+        <form class="contact-form" id="contactForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">이름 <span aria-hidden="true">*</span></label>
+              <input id="name" name="name" autocomplete="name" placeholder="홍길동" required />
+              <p class="field-message" data-message-for="name"></p>
+            </div>
+
+            <div class="field">
+              <label for="company">회사명 <small>(선택)</small></label>
+              <input id="company" name="company" autocomplete="organization" placeholder="NY Studio" />
+            </div>
+
+            <div class="field">
+              <label for="email">이메일 <span aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="hello@example.com" required />
+              <p class="field-message" data-message-for="email"></p>
+            </div>
+
+            <div class="field">
+              <label for="phone">전화번호 <span aria-hidden="true">*</span></label>
+              <input id="phone" name="phone" inputmode="numeric" autocomplete="tel" pattern="[0-9]+" placeholder="01012345678" required />
+              <p class="field-message" data-message-for="phone"></p>
+            </div>
+
+            <div class="field">
+              <label for="projectType">프로젝트 종류 <span aria-hidden="true">*</span></label>
+              <select id="projectType" name="projectType" required>
+                <option value="">선택해주세요</option>
+                <option value="landing">랜딩페이지</option>
+                <option value="portfolio">포트폴리오 사이트</option>
+                <option value="brand">브랜드/회사 소개 사이트</option>
+                <option value="commerce">커머스/예약 페이지</option>
+                <option value="motion">모션 그래픽</option>
+                <option value="other">기타</option>
+              </select>
+              <p class="field-message" data-message-for="projectType"></p>
+            </div>
+
+            <div class="field">
+              <label for="budget">예산 <span aria-hidden="true">*</span></label>
+              <select id="budget" name="budget" required>
+                <option value="">선택해주세요</option>
+                <option value="under-1m">100만원 미만</option>
+                <option value="1m-3m">100만원-300만원</option>
+                <option value="3m-5m">300만원-500만원</option>
+                <option value="5m-10m">500만원-1,000만원</option>
+                <option value="over-10m">1,000만원 이상</option>
+                <option value="undecided">미정</option>
+              </select>
+              <p class="field-message" data-message-for="budget"></p>
+            </div>
+
+            <div class="field">
+              <label for="schedule">희망 일정 <span aria-hidden="true">*</span></label>
+              <input id="schedule" name="schedule" type="date" required />
+              <p class="field-message" data-message-for="schedule"></p>
+            </div>
+
+            <div class="field">
+              <label for="referenceUrl">참고 사이트</label>
+              <input id="referenceUrl" name="referenceUrl" type="url" inputmode="url" placeholder="https://example.com" />
+              <p class="field-message" data-message-for="referenceUrl"></p>
+            </div>
+
+            <div class="field field-wide">
+              <label for="details">작업 내용 <span aria-hidden="true">*</span></label>
+              <textarea id="details" name="details" rows="7" minlength="20" placeholder="원하는 분위기, 필요한 페이지, 참고 자료, 마감 일정 등을 자유롭게 적어주세요." required></textarea>
+              <p class="field-message" data-message-for="details"></p>
+            </div>
+          </div>
+
+          <label class="agreement" for="privacy">
+            <input id="privacy" name="privacy" type="checkbox" required />
+            <span>문의 답변을 위한 개인정보 수집 및 이용에 동의합니다.</span>
+          </label>
+          <p class="field-message agreement-message" data-message-for="privacy"></p>
+
+          <div class="form-footer">
+            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+            <button class="submit-button" type="submit">문의하기</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
