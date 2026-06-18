@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>방명록</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+      :root {
+        --bg: #f6f2ea;
+        --ink: #171717;
+        --muted: #6f6b64;
+        --line: #ded6c9;
+        --paper: #fffaf0;
+        --paper-strong: #ffffff;
+        --accent: #1f7a5b;
+        --accent-dark: #14533e;
+        --danger: #aa3028;
+        --shadow: 0 18px 50px rgba(44, 36, 25, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        font-family: Pretendard, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          linear-gradient(90deg, rgba(23, 23, 23, 0.045) 1px, transparent 1px),
+          linear-gradient(rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+          var(--bg);
+        background-size: 34px 34px;
+      }
+
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        width: min(980px, calc(100% - 36px));
+        margin: 0 auto;
+        padding: 52px 0;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 52px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 850;
+      }
+
+      .brand-mark {
+        width: 14px;
+        height: 14px;
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        background: var(--paper);
+      }
+
+      .ghost-button {
+        min-height: 38px;
+        padding: 0 13px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(255, 250, 240, 0.76);
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.58fr);
+        gap: 22px;
+        align-items: start;
+      }
+
+      .intro {
+        min-height: 360px;
+        padding: clamp(28px, 6vw, 58px);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 250, 240, 0.8);
+        box-shadow: var(--shadow);
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 600px;
+        margin-top: 18px;
+        font-size: clamp(46px, 9vw, 92px);
+        line-height: 0.92;
+        letter-spacing: 0;
+      }
+
+      .intro p {
+        max-width: 520px;
+        margin-top: 24px;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.7;
+        font-weight: 650;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 32px;
+        padding: 9px 11px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--paper-strong);
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .status::before {
+        content: "";
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--danger);
+      }
+
+      .status.ready::before {
+        background: var(--accent);
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+      }
+
+      .form-panel {
+        padding: 22px;
+      }
+
+      .form-panel h2,
+      .entries-head h2 {
+        font-size: 22px;
+        line-height: 1.2;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      label {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--paper-strong);
+        color: var(--ink);
+        outline: none;
+      }
+
+      input {
+        height: 46px;
+        padding: 0 13px;
+      }
+
+      textarea {
+        min-height: 142px;
+        resize: vertical;
+        padding: 13px;
+        line-height: 1.6;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(31, 122, 91, 0.16);
+      }
+
+      .submit {
+        width: 100%;
+        min-height: 48px;
+        margin-top: 18px;
+        border: 0;
+        border-radius: 6px;
+        background: var(--accent);
+        color: #ffffff;
+        font-weight: 900;
+      }
+
+      .submit:hover {
+        background: var(--accent-dark);
+      }
+
+      .submit:disabled {
+        cursor: not-allowed;
+        background: #a6a198;
+      }
+
+      .notice {
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .notice.error {
+        color: var(--danger);
+        font-weight: 800;
+      }
+
+      .entries {
+        margin-top: 22px;
+        padding: 28px;
+      }
+
+      .entries-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .count {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .entry-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .entry {
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--paper-strong);
+      }
+
+      .entry-body {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 12px;
+        align-items: start;
+      }
+
+      .entry-avatar {
+        width: 42px;
+        height: 42px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: #f2eee5;
+      }
+
+      .entry-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .entry-name {
+        color: var(--ink);
+      }
+
+      .entry-message {
+        margin-top: 12px;
+        white-space: pre-wrap;
+        color: #2b2925;
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .empty {
+        display: grid;
+        min-height: 160px;
+        place-items: center;
+        border: 1px dashed var(--line);
+        border-radius: 6px;
+        color: var(--muted);
+        text-align: center;
+        font-weight: 750;
+      }
+
+      .setup {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        place-items: center;
+        padding: 18px;
+        background: rgba(23, 23, 23, 0.3);
+        backdrop-filter: blur(8px);
+      }
+
+      .setup.open {
+        display: grid;
+      }
+
+      .setup-card {
+        width: min(560px, 100%);
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+      }
+
+      .setup-card p {
+        margin-top: 10px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .setup-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .code {
+        margin-top: 16px;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #171717;
+      }
+
+      pre {
+        margin: 0;
+        padding: 16px;
+        color: #fffaf0;
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      @media (max-width: 820px) {
+        .page {
+          width: min(100% - 28px, 620px);
+          padding: 28px 0;
+        }
+
+        .topbar {
+          margin-bottom: 28px;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .intro {
+          min-height: auto;
+        }
+
+        .entries {
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <a class="brand" href="guestbook.html" aria-label="방명록 홈">
+          <span class="brand-mark"></span>
+          <span>Guestbook</span>
+        </a>
+        <div style="display: flex; gap: 8px; align-items: center">
+          <a class="ghost-button" href="index.html" style="display: inline-flex; align-items: center">Portfolio</a>
+          <button class="ghost-button" id="openSetup" type="button">Supabase 설정</button>
+        </div>
+      </header>
+
+      <section class="hero" aria-label="방명록">
+        <div class="intro">
+          <span class="eyebrow">BLANK PAGE</span>
+          <h1>짧게 남기는 방명록.</h1>
+          <p>
+            이름과 메시지를 남기면 Supabase에 저장되고, 최신 글부터 이곳에 표시됩니다.
+            공개 페이지에서 쓰는 키는 반드시 Supabase의 anon public key여야 합니다.
+          </p>
+          <div class="status" id="connectionStatus">Supabase 키 설정 필요</div>
+        </div>
+
+        <form class="panel form-panel" id="guestbookForm">
+          <h2>글 남기기</h2>
+          <div class="field">
+            <label for="name">이름</label>
+            <input id="name" name="name" maxlength="40" placeholder="예: 나영" required />
+          </div>
+          <div class="field">
+            <label for="message">메시지</label>
+            <textarea id="message" name="message" maxlength="500" placeholder="방명록 메시지를 적어주세요." required></textarea>
+          </div>
+          <button class="submit" id="submitButton" type="submit">등록하기</button>
+          <p class="notice" id="formNotice">Supabase anon key를 설정하면 저장할 수 있어요.</p>
+        </form>
+      </section>
+
+      <section class="panel entries" aria-label="방명록 목록">
+        <div class="entries-head">
+          <h2>남겨진 글</h2>
+          <span class="count" id="entryCount">0개</span>
+        </div>
+        <div class="entry-list" id="entryList">
+          <div class="empty">아직 메시지가 없습니다.</div>
+        </div>
+      </section>
+    </main>
+
+    <div class="setup" id="setupDialog" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+      <div class="setup-card">
+        <h2 id="setupTitle">Supabase 연결</h2>
+        <p>
+          프로젝트 URL은 이미 적용되어 있습니다. 아래에는 Supabase Dashboard의
+          Project Settings > API에서 확인한 anon public key만 넣어주세요.
+        </p>
+        <div class="field">
+          <label for="anonKey">anon public key</label>
+          <input id="anonKey" placeholder="eyJhbGciOi..." autocomplete="off" />
+        </div>
+        <p class="notice error" id="setupNotice"></p>
+        <div class="setup-actions">
+          <button class="ghost-button" id="closeSetup" type="button">닫기</button>
+          <button class="submit" id="saveSetup" type="button" style="width: auto; margin-top: 0; padding: 0 18px">저장</button>
+        </div>
+        <div class="code" aria-label="Supabase SQL">
+          <pre>create extension if not exists "pgcrypto";
+
+create table if not exists public.guestbook (
+  id uuid primary key default gen_random_uuid(),
+  name text not null check (char_length(btrim(name)) > 0 and char_length(name) <= 40),
+  message text not null check (char_length(btrim(message)) > 0 and char_length(message) <= 500),
+  avatar_url text,
+  created_at timestamptz not null default now()
+);
+
+alter table public.guestbook enable row level security;
+
+drop policy if exists "Anyone can read guestbook" on public.guestbook;
+create policy "Anyone can read guestbook"
+on public.guestbook for select
+to anon, authenticated
+using (true);
+
+drop policy if exists "Anyone can add guestbook" on public.guestbook;
+create policy "Anyone can add guestbook"
+on public.guestbook for insert
+to anon, authenticated
+with check (
+  char_length(btrim(name)) > 0
+  and char_length(name) <= 40
+  and char_length(btrim(message)) > 0
+  and char_length(message) <= 500
+);
+
+create index if not exists guestbook_created_at_idx
+on public.guestbook (created_at desc);</pre>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const SUPABASE_URL = "https://qzekurrfmswtfavispiw.supabase.co";
+      const SUPABASE_KEY_STORAGE = "guestbook_supabase_anon_key";
+      const tableName = "guestbook";
+
+      const form = document.querySelector("#guestbookForm");
+      const nameInput = document.querySelector("#name");
+      const messageInput = document.querySelector("#message");
+      const submitButton = document.querySelector("#submitButton");
+      const formNotice = document.querySelector("#formNotice");
+      const entryList = document.querySelector("#entryList");
+      const entryCount = document.querySelector("#entryCount");
+      const connectionStatus = document.querySelector("#connectionStatus");
+      const setupDialog = document.querySelector("#setupDialog");
+      const openSetup = document.querySelector("#openSetup");
+      const closeSetup = document.querySelector("#closeSetup");
+      const saveSetup = document.querySelector("#saveSetup");
+      const anonKeyInput = document.querySelector("#anonKey");
+      const setupNotice = document.querySelector("#setupNotice");
+
+      let supabaseClient = null;
+
+      const formatDate = (value) => {
+        return new Intl.DateTimeFormat("ko-KR", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }).format(new Date(value));
+      };
+
+      const setNotice = (message, isError = false) => {
+        formNotice.textContent = message;
+        formNotice.classList.toggle("error", isError);
+      };
+
+      const getStoredKey = () => localStorage.getItem(SUPABASE_KEY_STORAGE) || "";
+
+      const isSecretKey = (key) => key.trim().startsWith("sb_secret_");
+
+      const createAvatarUrl = (seed) => {
+        const safeSeed = encodeURIComponent(seed.trim() || "guest");
+        return `https://api.dicebear.com/9.x/thumbs/svg?seed=${safeSeed}&backgroundColor=f1f4dc,e6f0ff,ffe4e6,d1fae5,ede9fe`;
+      };
+
+      const setConnectedState = (isReady) => {
+        submitButton.disabled = !isReady;
+        connectionStatus.classList.toggle("ready", isReady);
+        connectionStatus.textContent = isReady ? "Supabase 연결 준비됨" : "Supabase 키 설정 필요";
+      };
+
+      const openSetupDialog = () => {
+        anonKeyInput.value = getStoredKey();
+        setupNotice.textContent = "";
+        setupDialog.classList.add("open");
+        anonKeyInput.focus();
+      };
+
+      const closeSetupDialog = () => {
+        setupDialog.classList.remove("open");
+      };
+
+      const createClient = () => {
+        const key = getStoredKey();
+
+        if (!key || isSecretKey(key) || !window.supabase) {
+          supabaseClient = null;
+          setConnectedState(false);
+          return false;
+        }
+
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, key);
+        setConnectedState(true);
+        return true;
+      };
+
+      const renderEntries = (entries) => {
+        entryCount.textContent = `${entries.length}개`;
+
+        if (!entries.length) {
+          entryList.innerHTML = '<div class="empty">아직 메시지가 없습니다.</div>';
+          return;
+        }
+
+        entryList.innerHTML = entries
+          .map((entry) => {
+            const name = entry.name.replace(/[&<>"']/g, (char) => ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#039;",
+            })[char]);
+            const message = entry.message.replace(/[&<>"']/g, (char) => ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#039;",
+            })[char]);
+            const avatarUrl = entry.avatar_url || createAvatarUrl(entry.name);
+
+            return `
+              <article class="entry">
+                <div class="entry-body">
+                  <img class="entry-avatar" src="${avatarUrl}" alt="${name} avatar" />
+                  <div>
+                    <div class="entry-meta">
+                      <span class="entry-name">${name}</span>
+                      <time datetime="${entry.created_at}">${formatDate(entry.created_at)}</time>
+                    </div>
+                    <p class="entry-message">${message}</p>
+                  </div>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+      };
+
+      const loadEntries = async () => {
+        if (!supabaseClient) {
+          renderEntries([]);
+          return;
+        }
+
+        const { data, error } = await supabaseClient
+          .from(tableName)
+          .select("id, name, message, avatar_url, created_at")
+          .order("created_at", { ascending: false })
+          .limit(50);
+
+        if (error) {
+          setNotice(`목록을 불러오지 못했습니다: ${error.message}`, true);
+          return;
+        }
+
+        renderEntries(data || []);
+        setNotice("메시지를 남길 준비가 됐어요.");
+      };
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!supabaseClient) {
+          openSetupDialog();
+          return;
+        }
+
+        const name = nameInput.value.trim();
+        const message = messageInput.value.trim();
+
+        if (!name || !message) {
+          setNotice("이름과 메시지를 모두 입력해주세요.", true);
+          return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "등록 중...";
+
+        const avatar_url = createAvatarUrl(`${name}-${Date.now()}`);
+        const { error } = await supabaseClient.from(tableName).insert({ name, message, avatar_url });
+
+        submitButton.disabled = false;
+        submitButton.textContent = "등록하기";
+
+        if (error) {
+          setNotice(`저장하지 못했습니다: ${error.message}`, true);
+          return;
+        }
+
+        form.reset();
+        setNotice("방명록에 메시지를 남겼습니다.");
+        await loadEntries();
+      });
+
+      openSetup.addEventListener("click", openSetupDialog);
+      closeSetup.addEventListener("click", closeSetupDialog);
+
+      setupDialog.addEventListener("click", (event) => {
+        if (event.target === setupDialog) {
+          closeSetupDialog();
+        }
+      });
+
+      saveSetup.addEventListener("click", async () => {
+        const key = anonKeyInput.value.trim();
+
+        if (!key) {
+          setupNotice.textContent = "anon public key를 입력해주세요.";
+          return;
+        }
+
+        if (isSecretKey(key)) {
+          setupNotice.textContent = "sb_secret 키는 브라우저에 저장할 수 없습니다. anon public key를 사용해주세요.";
+          return;
+        }
+
+        localStorage.setItem(SUPABASE_KEY_STORAGE, key);
+        createClient();
+        closeSetupDialog();
+        await loadEntries();
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeSetupDialog();
+        }
+      });
+
+      createClient();
+      loadEntries();
+    </script>
+  </body>
+</html>
