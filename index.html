@@ -3,6 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/favicon.png" />
+    <meta name="theme-color" content="#0b0b0c" />
+    <meta name="application-name" content="NY Studio" />
+    <meta name="apple-mobile-web-app-title" content="NY Studio" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="감각적인 웹디자인과 모션그래픽 작업물을 소개하는 포트폴리오입니다." />
+    <meta property="og:title" content="김나영 | 웹디자인 & 모션그래픽 포트폴리오" />
+    <meta property="og:description" content="감각적인 웹디자인과 모션그래픽 작업물을 소개하는 포트폴리오입니다." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yeong4727-bot.github.io/MyLandingPage/" />
+    <meta property="og:image" content="https://yeong4727-bot.github.io/MyLandingPage/assets/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="김나영 | 웹디자인 & 모션그래픽 포트폴리오" />
+    <meta name="twitter:description" content="감각적인 웹디자인과 모션그래픽 작업물을 소개하는 포트폴리오입니다." />
+    <meta name="twitter:image" content="https://yeong4727-bot.github.io/MyLandingPage/assets/og-image.jpg" />
     <title>NY Studio | Web Design & Motion Graphics</title>
     <style>
       :root {
@@ -641,7 +661,9 @@
       .process-panel {
         position: relative;
         display: none;
+        grid-column: 1 / -1;
         margin-top: 34px;
+        margin-bottom: 18px;
         overflow: hidden;
         border: 1px solid var(--line);
         border-radius: 6px;
@@ -656,12 +678,17 @@
       }
 
       .process-visual {
+        position: relative;
         min-height: 420px;
-        background:
-          linear-gradient(135deg, var(--process-accent, rgba(255, 91, 79, 0.68)), transparent 62%),
-          url("assets/portfolio-collage.png");
-        background-size: cover;
-        background-position: var(--process-position, center);
+        overflow: hidden;
+        background: #050505;
+      }
+
+      .process-visual video {
+        width: 100%;
+        height: 100%;
+        min-height: 420px;
+        object-fit: cover;
       }
 
       .process-close {
@@ -781,6 +808,10 @@
         border-color: var(--ink);
         background: var(--ink);
         color: var(--paper);
+      }
+
+      .gallery-controls {
+        display: none;
       }
 
       .gallery-grid {
@@ -1150,7 +1181,10 @@
           min-height: 0;
         }
 
-        .featured-grid,
+        .featured-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
         .gallery-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
           grid-auto-rows: 118px;
@@ -1180,7 +1214,7 @@
         .hero {
           min-height: 100vh;
           align-items: end;
-          padding-bottom: 34px;
+          padding-bottom: 86px;
         }
 
         .hero::after {
@@ -1212,7 +1246,15 @@
         }
 
         .hero-copy {
-          margin-bottom: 0;
+          margin-bottom: 18px;
+        }
+
+        .hero-actions {
+          margin-top: 24px;
+        }
+
+        .hero-dots {
+          bottom: 24px;
         }
 
         .hero-visual img {
@@ -1220,29 +1262,119 @@
           min-height: 0;
         }
 
-        .featured-grid,
         .gallery-grid,
         .service-grid {
           grid-template-columns: 1fr;
+        }
+
+        .featured-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 18px;
         }
 
         .gallery-grid {
           grid-auto-rows: auto;
         }
 
+        #portfolio {
+          overflow: hidden;
+        }
+
+        #portfolio.section-reveal,
+        #portfolio .reveal,
+        #portfolio .reveal-image {
+          opacity: 1;
+          transform: none;
+        }
+
+        .gallery-frame {
+          position: relative;
+          overflow: hidden;
+          margin-right: -22px;
+          margin-left: -22px;
+        }
+
+        .gallery-controls {
+          position: absolute;
+          top: 50%;
+          right: 20px;
+          left: 20px;
+          z-index: 4;
+          display: flex;
+          justify-content: space-between;
+          gap: 16px;
+          margin: 0;
+          pointer-events: none;
+          transform: translateY(-50%);
+        }
+
+        .gallery-arrow {
+          display: inline-flex;
+          width: 52px;
+          height: 52px;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          border-radius: 50%;
+          background: rgba(0, 0, 0, 0.44);
+          color: var(--white);
+          font-size: 34px;
+          font-weight: 300;
+          line-height: 1;
+          cursor: pointer;
+          opacity: 0.76;
+          pointer-events: auto;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+          transition: opacity 180ms ease, transform 180ms ease, background 180ms ease;
+        }
+
+        .gallery-arrow:hover,
+        .gallery-arrow:active,
+        .gallery-arrow:focus-visible {
+          background: rgba(0, 0, 0, 0.62);
+          opacity: 1;
+          transform: scale(1.08);
+        }
+
+        .gallery-grid {
+          display: flex;
+          grid-auto-rows: unset;
+          gap: 14px;
+          margin-right: 0;
+          margin-left: 0;
+          padding: 0 22px 10px;
+          overflow-x: auto;
+          overflow-y: hidden;
+          scroll-behavior: smooth;
+          scroll-padding: 22px;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .gallery-grid::-webkit-scrollbar {
+          display: none;
+        }
+
         .tile.wide,
         .tile.tall,
         .tile.square {
-          grid-column: span 1;
+          flex: 0 0 min(82vw, 360px);
+          grid-column: auto;
           grid-row: auto;
           aspect-ratio: 4 / 5;
+          scroll-snap-align: center;
         }
 
         section {
           margin-right: 18px;
           margin-left: 18px;
-          padding-right: 22px;
-          padding-left: 22px;
+        }
+
+        main > section:not(.hero) {
+          padding: 72px 22px;
         }
 
         .hero {
@@ -1251,14 +1383,20 @@
         }
 
         .work-card {
-          min-height: 360px;
+          min-height: 440px;
         }
 
         .process-panel.open {
           grid-template-columns: 1fr;
+          margin-top: 18px;
+          margin-bottom: 36px;
         }
 
         .process-visual {
+          min-height: 260px;
+        }
+
+        .process-visual video {
           min-height: 260px;
         }
 
@@ -1267,7 +1405,15 @@
         }
 
         .reel-frame {
-          aspect-ratio: 4 / 5;
+          aspect-ratio: auto;
+          background: #000000;
+        }
+
+        .reel-video {
+          display: block;
+          height: auto;
+          min-height: 0;
+          object-fit: contain;
         }
 
         .tile {
@@ -1381,7 +1527,7 @@
             </div>
           </article>
           <article class="work-card" data-work="motion" role="button" tabindex="0">
-            <video class="work-video" src="assets/videos/beauty.mp4" muted loop playsinline preload="metadata" poster="assets/portfolio-collage.png"></video>
+            <video class="work-video" src="assets/mp4-2-1.mp4" muted loop playsinline preload="metadata" poster="assets/portfolio-collage.png"></video>
             <div class="work-content">
               <div class="work-meta">
                 <span>Source Edit</span>
@@ -1396,7 +1542,7 @@
             </div>
           </article>
           <article class="work-card" data-work="campaign" role="button" tabindex="0">
-            <video class="work-video" src="assets/videos/commerce.mp4" muted loop playsinline preload="metadata" poster="assets/portfolio-collage.png"></video>
+            <video class="work-video" src="assets/mp4-1.mp4" muted loop playsinline preload="metadata" poster="assets/portfolio-collage.png"></video>
             <div class="work-content">
               <div class="work-meta">
                 <span>Post Production</span>
@@ -1413,7 +1559,9 @@
         </div>
         <div class="process-panel" id="workProcess" aria-live="polite">
           <button class="process-close" id="processClose" type="button" aria-label="Case study 닫기">×</button>
-          <div class="process-visual" id="processVisual"></div>
+          <div class="process-visual" id="processVisual">
+            <video src="assets/mp4-2-1.mp4" autoplay muted loop playsinline preload="metadata"></video>
+          </div>
           <div class="process-content">
             <small id="processCategory">Image Generation</small>
             <h3 id="processTitle">스테이블디퓨전으로 이미지제작</h3>
@@ -1435,63 +1583,69 @@
           <button class="filter" data-filter="brand" type="button">Branding</button>
           <button class="filter" data-filter="commerce" type="button">E-commerce</button>
         </div>
-        <div class="gallery-grid">
-          <a class="tile wide" href="portfolio-detail.html?project=landing-experience" data-category="web" aria-label="Landing Experience 상세 페이지 열기" style="--accent: rgba(216, 181, 109, 0.48); --position: 10% 45%">
-            <div class="tile-preview"></div>
-            <div class="tile-caption">
-              <h3>Landing Experience</h3>
-              <p>Web Design / Interaction</p>
-            </div>
-          </a>
-          <a class="tile tall" href="portfolio-detail.html?project=motion-title-pack" data-category="motion" aria-label="Motion Title Pack 상세 페이지 열기" style="--accent: rgba(142, 167, 255, 0.46); --position: 40% 50%">
-            <div class="tile-preview"></div>
-            <div class="tile-caption">
-              <h3>Motion Title Pack</h3>
-              <p>Motion Graphic / Typography</p>
-            </div>
-          </a>
-          <a class="tile tall" href="portfolio-detail.html?project=commerce-visual-system" data-category="commerce" aria-label="Commerce Visual System 상세 페이지 열기" style="--accent: rgba(36, 92, 255, 0.68); --position: 70% 52%">
-            <div class="tile-preview"></div>
-            <div class="tile-caption">
-              <h3>Commerce Visual System</h3>
-              <p>E-commerce / Banner System</p>
-            </div>
-          </a>
-          <a class="tile square" href="portfolio-detail.html?project=brand-campaign-grid" data-category="brand" aria-label="Brand Campaign Grid 상세 페이지 열기" style="--accent: rgba(244, 240, 232, 0.28); --position: 88% 45%">
-            <div class="tile-preview"></div>
-            <div class="tile-caption">
-              <h3>Brand Campaign Grid</h3>
-              <p>Branding / Campaign</p>
-            </div>
-          </a>
-          <a class="tile wide" href="portfolio-detail.html?project=portfolio-interface" data-category="web" aria-label="Portfolio Interface 상세 페이지 열기" style="--accent: rgba(216, 181, 109, 0.36); --position: 24% 72%">
-            <div class="tile-preview"></div>
-            <div class="tile-caption">
-              <h3>Portfolio Interface</h3>
-              <p>Responsive UI / Layout</p>
-            </div>
-          </a>
-          <a class="tile tall" href="portfolio-detail.html?project=social-motion-cut" data-category="motion" aria-label="Social Motion Cut 상세 페이지 열기" style="--accent: rgba(142, 167, 255, 0.38); --position: 58% 74%">
-            <div class="tile-preview"></div>
-            <div class="tile-caption">
-              <h3>Social Motion Cut</h3>
-              <p>Short-form / Edit Rhythm</p>
-            </div>
-          </a>
-          <a class="tile square" href="portfolio-detail.html?project=promotion-layout" data-category="commerce" aria-label="Promotion Layout 상세 페이지 열기" style="--accent: rgba(36, 92, 255, 0.56); --position: 78% 78%">
-            <div class="tile-preview"></div>
-            <div class="tile-caption">
-              <h3>Promotion Layout</h3>
-              <p>Commerce / Conversion Flow</p>
-            </div>
-          </a>
-          <a class="tile square" href="portfolio-detail.html?project=campaign-thumbnail" data-category="brand" aria-label="Campaign Thumbnail 상세 페이지 열기" style="--accent: rgba(216, 181, 109, 0.34); --position: 92% 70%">
-            <div class="tile-preview"></div>
-            <div class="tile-caption">
-              <h3>Campaign Thumbnail</h3>
-              <p>Visual Direction / System</p>
-            </div>
-          </a>
+        <div class="gallery-frame">
+          <div class="gallery-controls" aria-label="Portfolio gallery controls">
+            <button class="gallery-arrow prev" type="button" aria-label="이전 포트폴리오">‹</button>
+            <button class="gallery-arrow next" type="button" aria-label="다음 포트폴리오">›</button>
+          </div>
+          <div class="gallery-grid">
+            <a class="tile wide" href="portfolio-detail.html?project=landing-experience" data-category="web" aria-label="Landing Experience 상세 페이지 열기" style="--accent: rgba(216, 181, 109, 0.48); --position: 10% 45%">
+              <div class="tile-preview"></div>
+              <div class="tile-caption">
+                <h3>Landing Experience</h3>
+                <p>Web Design / Interaction</p>
+              </div>
+            </a>
+            <a class="tile tall" href="portfolio-detail.html?project=motion-title-pack" data-category="motion" aria-label="Motion Title Pack 상세 페이지 열기" style="--accent: rgba(142, 167, 255, 0.46); --position: 40% 50%">
+              <div class="tile-preview"></div>
+              <div class="tile-caption">
+                <h3>Motion Title Pack</h3>
+                <p>Motion Graphic / Typography</p>
+              </div>
+            </a>
+            <a class="tile tall" href="portfolio-detail.html?project=commerce-visual-system" data-category="commerce" aria-label="Commerce Visual System 상세 페이지 열기" style="--accent: rgba(36, 92, 255, 0.68); --position: 70% 52%">
+              <div class="tile-preview"></div>
+              <div class="tile-caption">
+                <h3>Commerce Visual System</h3>
+                <p>E-commerce / Banner System</p>
+              </div>
+            </a>
+            <a class="tile square" href="portfolio-detail.html?project=brand-campaign-grid" data-category="brand" aria-label="Brand Campaign Grid 상세 페이지 열기" style="--accent: rgba(244, 240, 232, 0.28); --position: 88% 45%">
+              <div class="tile-preview"></div>
+              <div class="tile-caption">
+                <h3>Brand Campaign Grid</h3>
+                <p>Branding / Campaign</p>
+              </div>
+            </a>
+            <a class="tile wide" href="portfolio-detail.html?project=portfolio-interface" data-category="web" aria-label="Portfolio Interface 상세 페이지 열기" style="--accent: rgba(216, 181, 109, 0.36); --position: 24% 72%">
+              <div class="tile-preview"></div>
+              <div class="tile-caption">
+                <h3>Portfolio Interface</h3>
+                <p>Responsive UI / Layout</p>
+              </div>
+            </a>
+            <a class="tile tall" href="portfolio-detail.html?project=social-motion-cut" data-category="motion" aria-label="Social Motion Cut 상세 페이지 열기" style="--accent: rgba(142, 167, 255, 0.38); --position: 58% 74%">
+              <div class="tile-preview"></div>
+              <div class="tile-caption">
+                <h3>Social Motion Cut</h3>
+                <p>Short-form / Edit Rhythm</p>
+              </div>
+            </a>
+            <a class="tile square" href="portfolio-detail.html?project=promotion-layout" data-category="commerce" aria-label="Promotion Layout 상세 페이지 열기" style="--accent: rgba(36, 92, 255, 0.56); --position: 78% 78%">
+              <div class="tile-preview"></div>
+              <div class="tile-caption">
+                <h3>Promotion Layout</h3>
+                <p>Commerce / Conversion Flow</p>
+              </div>
+            </a>
+            <a class="tile square" href="portfolio-detail.html?project=campaign-thumbnail" data-category="brand" aria-label="Campaign Thumbnail 상세 페이지 열기" style="--accent: rgba(216, 181, 109, 0.34); --position: 92% 70%">
+              <div class="tile-preview"></div>
+              <div class="tile-caption">
+                <h3>Campaign Thumbnail</h3>
+                <p>Visual Direction / System</p>
+              </div>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -1538,12 +1692,12 @@
       <section class="contact" id="contact">
         <div>
           <span class="eyebrow">Contact</span>
-          <h2>Let’s build a sharper digital presence.</h2>
+          <h2>컨택</h2>
           <p>Available for web design, motion graphic, campaign visual, and portfolio-focused design projects.</p>
           <div class="contact-actions">
-            <a class="button" href="mailto:hello@example.com">hello@example.com</a>
+            <span class="button" aria-disabled="true">이메일 준비 중</span>
             <a class="button secondary" href="contact.html">작업 문의</a>
-            <a class="button secondary" href="https://instagram.com/" target="_blank" rel="noreferrer">Instagram</a>
+            <span class="button secondary" aria-disabled="true">Instagram 준비 중</span>
           </div>
         </div>
       </section>
@@ -1557,6 +1711,9 @@
     <script>
       const filters = document.querySelectorAll(".filter");
       const tiles = document.querySelectorAll(".tile");
+      const galleryGrid = document.querySelector(".gallery-grid");
+      const galleryPrev = document.querySelector(".gallery-arrow.prev");
+      const galleryNext = document.querySelector(".gallery-arrow.next");
       const heroSlider = document.querySelector(".hero-slider");
       const heroDots = document.querySelectorAll(".hero-dot");
       const heroPrev = document.querySelector(".hero-arrow.prev");
@@ -1651,10 +1808,13 @@
         }
 
         setHeroTrack(currentHeroSlide, false);
+        heroSlider.offsetWidth;
         updateHeroDots();
 
         requestAnimationFrame(() => {
-          heroSlider.style.transition = "";
+          requestAnimationFrame(() => {
+            heroSlider.style.transition = "";
+          });
         });
       };
 
@@ -1670,7 +1830,11 @@
         startHeroAutoSlide();
       };
 
-      heroSlider.addEventListener("transitionend", resetHeroLoopIfNeeded);
+      heroSlider.addEventListener("transitionend", (event) => {
+        if (event.propertyName === "transform") {
+          resetHeroLoopIfNeeded();
+        }
+      });
 
       heroDots.forEach((dot, index) => {
         dot.addEventListener("click", () => {
@@ -1737,8 +1901,9 @@
 
       const renderProcess = (workKey) => {
         const work = processData[workKey];
+        const selectedCard = [...workCards].find((card) => card.dataset.work === workKey);
 
-        if (!work) {
+        if (!work || !selectedCard) {
           return;
         }
 
@@ -1749,8 +1914,6 @@
         processPanel.classList.add("open");
         processPanel.style.setProperty("--process-accent", work.accent);
         processPanel.style.setProperty("--process-position", work.position);
-        processVisual.style.setProperty("--process-accent", work.accent);
-        processVisual.style.setProperty("--process-position", work.position);
         processCategory.textContent = work.category;
         processTitle.textContent = work.title;
         processSummary.textContent = work.summary;
@@ -1841,6 +2004,31 @@
         animatedItems.forEach((item) => item.classList.add("is-visible"));
       }
 
+      const getVisibleTiles = () => [...tiles].filter((tile) => !tile.classList.contains("hidden"));
+
+      const scrollGallery = (direction) => {
+        const visibleTiles = getVisibleTiles();
+
+        if (!galleryGrid || visibleTiles.length === 0) {
+          return;
+        }
+
+        const currentLeft = galleryGrid.scrollLeft;
+        const getTileLeft = (tile) => tile.offsetLeft - galleryGrid.offsetLeft;
+        const currentIndex = visibleTiles.findIndex((tile) => getTileLeft(tile) >= currentLeft - 2);
+        const fallbackIndex = direction > 0 ? 0 : visibleTiles.length - 1;
+        const baseIndex = currentIndex === -1 ? fallbackIndex : currentIndex;
+        const nextIndex = Math.min(Math.max(baseIndex + direction, 0), visibleTiles.length - 1);
+
+        galleryGrid.scrollTo({
+          left: getTileLeft(visibleTiles[nextIndex]),
+          behavior: "smooth",
+        });
+      };
+
+      galleryPrev.addEventListener("click", () => scrollGallery(-1));
+      galleryNext.addEventListener("click", () => scrollGallery(1));
+
       filters.forEach((filter) => {
         filter.addEventListener("click", () => {
           const category = filter.dataset.filter;
@@ -1850,6 +2038,8 @@
             const shouldShow = category === "all" || tile.dataset.category === category;
             tile.classList.toggle("hidden", !shouldShow);
           });
+
+          galleryGrid.scrollTo({ left: 0, behavior: "smooth" });
         });
       });
     </script>

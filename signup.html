@@ -3,6 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/favicon.png" />
+    <meta name="theme-color" content="#0b0b0c" />
+    <meta name="application-name" content="NY Studio" />
+    <meta name="apple-mobile-web-app-title" content="NY Studio" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>회원가입 | NY Studio</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -426,11 +434,9 @@
         checkUsername.textContent = "확인 중...";
         setMessage(usernameMessage, "아이디 중복 확인 중...");
 
-        const { data, error } = await supabaseClient
-          .from(profileTableName)
-          .select("id")
-          .eq("username", username)
-          .maybeSingle();
+        const { data, error } = await supabaseClient.rpc("is_username_available", {
+          username_to_check: username,
+        });
 
         checkUsername.disabled = false;
         checkUsername.textContent = "중복 확인";
@@ -440,7 +446,7 @@
           return false;
         }
 
-        if (data) {
+        if (!data) {
           setMessage(usernameMessage, "이미 사용 중인 아이디입니다.", "error");
           return false;
         }
@@ -604,7 +610,7 @@
         }
 
         alert("환영합니다!");
-        window.location.href = "guestbook.html";
+        window.location.href = "index.html";
       });
 
       createClient();

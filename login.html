@@ -3,6 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/favicon.png" />
+    <meta name="theme-color" content="#0b0b0c" />
+    <meta name="application-name" content="NY Studio" />
+    <meta name="apple-mobile-web-app-title" content="NY Studio" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>로그인 | NY Studio</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -341,8 +349,8 @@
           return;
         }
 
-        setNotice(loginNotice, "로그인되었습니다. 방명록으로 이동합니다.", "valid");
-        window.location.href = "guestbook.html";
+        setNotice(loginNotice, "로그인되었습니다. 메인으로 이동합니다.", "valid");
+        window.location.href = "index.html";
       });
 
       createClient();

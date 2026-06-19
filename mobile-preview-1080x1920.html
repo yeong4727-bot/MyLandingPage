@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/favicon.png" />
+    <meta name="theme-color" content="#0b0b0c" />
+    <meta name="application-name" content="NY Studio" />
+    <meta name="apple-mobile-web-app-title" content="NY Studio" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Mobile Preview 1080x1920</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #111111;
+        color: #f4f0e8;
+        font-family: Inter, Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 18px;
+        background: rgba(17, 17, 17, 0.9);
+        border-bottom: 1px solid rgba(244, 240, 232, 0.14);
+        backdrop-filter: blur(16px);
+      }
+
+      .toolbar strong {
+        font-size: 14px;
+      }
+
+      .toolbar span {
+        color: rgba(244, 240, 232, 0.68);
+        font-size: 12px;
+      }
+
+      .stage {
+        width: 1080px;
+        height: 1920px;
+        margin: 28px auto;
+        overflow: hidden;
+        background: #0b0b0c;
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+        transform-origin: top center;
+      }
+
+      iframe {
+        width: 360px;
+        height: 640px;
+        border: 0;
+        transform: scale(3);
+        transform-origin: top left;
+      }
+
+      @media (max-width: 1180px) {
+        .stage {
+          transform: scale(calc((100vw - 28px) / 1080));
+          margin-bottom: calc(28px - (1920px * (1 - ((100vw - 28px) / 1080))));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <strong>1080 x 1920 모바일 미리보기</strong>
+      <span>내부 렌더링: 360 x 640 CSS px, DPR 3 기준</span>
+    </div>
+
+    <main class="stage" aria-label="1080 by 1920 mobile preview">
+      <iframe src="./index.html" title="Portfolio mobile preview"></iframe>
+    </main>
+  </body>
+</html>
